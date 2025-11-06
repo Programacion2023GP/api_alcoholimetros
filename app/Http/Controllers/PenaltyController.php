@@ -23,15 +23,22 @@ class PenaltyController extends Controller
         $penalties = Penalty::join('users', 'penalties.created_by', '=', 'users.id')
             ->whereIn('penalties.id', $latestIds)
             ->where('penalties.active', 1)
-
-            ->select('penalties.*', 'users.fullName as created_by')
+            ->select(
+                'penalties.*',
+                'users.fullName as created_by',
+                // Subconsulta para saber si tiene historial
+                DB::raw('(SELECT COUNT(*) FROM penalties p2 WHERE p2.curp = penalties.curp AND p2.active = 1) > 1 as has_history')
+            )
             ->get();
 
         return response()->json([
+            'status' => 'success',
+
             'success' => true,
             'data' => $penalties
         ]);
     }
+
     public function historial(Request $request)
     {
         // Obtener el ID más alto del CURP (registro más reciente)
