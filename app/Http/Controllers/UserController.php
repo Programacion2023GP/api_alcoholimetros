@@ -150,18 +150,36 @@ $token = $user->createToken('auth_token', $permisos->toArray())->plainTextToken;
     public function index()
     {
         try {
-            $users = User::where('payroll', '!=', '000000')->get();
+            $users = User::where('payroll', '!=', '000000')
+                ->leftJoin('user_permissions', 'users.id', '=', 'user_permissions.user_id')
+                ->leftJoin('permissions', 'user_permissions.permission_id', '=', 'permissions.id')
+                ->select(
+                    'users.*',
+                    DB::raw('GROUP_CONCAT(permissions.id) as permission_ids')
+                )
+                ->groupBy('users.id')
+                ->get()
+                ->map(function ($user) {
+                    $userArray = $user->toArray();
+                    // Convertir los IDs de permisos de string a array
+                    $userArray['permissions'] = $user->permission_ids
+                        ? explode(',', $user->permission_ids)
+                        : [];
+                    return $userArray;
+                });
+
             return ApiResponse::success(
                 $users,
                 'Lista de usuarios'
             );
-        } catch (Error $th) {
+        } catch (\Exception $th) {
             return ApiResponse::success(
                 null,
-                'No se pudo cargar los usuarios   '
+                'No se pudo cargar los usuarios'
             );
         }
     }
+    
     public function destroy(Request $request)
     {
         try {
