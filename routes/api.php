@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('penalties')->group(function () {
         Route::get('/index', [PenaltyController::class, 'index']);
-        Route::get('/historial', [PenaltyController::class, 'historial']);
+        Route::post('/historial', [PenaltyController::class, 'historial']);
 
         Route::post('/createorUpdate', [PenaltyController::class, 'storeOrUpdate']); // ← crea o actualiza
         Route::delete('/delete', [PenaltyController::class, 'toggleActive']);
