@@ -12,23 +12,23 @@ return new class extends Migration
             $table->id();
             $table->string('time');
             $table->date('date');
-            $table->string('image_penaltie');
-            $table->string('images_evidences');
+            $table->string('image_penaltie')->nullable();
+            $table->string('images_evidences')->nullable();
 
             $table->string('person_contraloria');
             $table->string('oficial_payroll')->nullable();
-            $table->string('person_oficial');
-            $table->string('vehicle_service_type');
-            $table->integer('alcohol_concentration');
-            $table->integer('group');
+            $table->string('person_oficial')->nullable();
+            $table->string('vehicle_service_type')->nullable();
+            $table->integer('alcohol_concentration')->nullable();
+            $table->integer('group')->nullable();
 
-            $table->string('municipal_police');
-            $table->string('civil_protection');
+            $table->string('municipal_police')->nullable();
+            $table->string('civil_protection')->nullable();
 
-            $table->string('command_vehicle');
-            $table->string('command_troops');
-            $table->string('command_details');
-            $table->string('filter_supervisor');
+            $table->string('command_vehicle')->nullable();
+            $table->string('command_troops')->nullable();
+            $table->string('command_details')->nullable();
+            $table->string('filter_supervisor')->nullable();
 
             $table->string('name');
             $table->string('cp');
