@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dependence extends Model
 {
       protected $primaryKey = 'id';
-    protected $table = 'dependence';
+    protected $table = 'dependences';
     protected $fillable = ['active', 'name'.'color'];
 
 }
