@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             'catalogo_dependencia_actualizar',
             'catalogo_dependencia_eliminar',
             'catalogo_dependencia_exportar',
-            'vista_reports'
+            'reports_dashboard'
         ];
 
         // 🔹 Insertar permisos
