@@ -23,6 +23,7 @@ class User extends Authenticatable
         'paternalSurname',
         'maternalSurname',
         'payroll',
+        'dependence_id',
         'password',
         'active',
     ];
