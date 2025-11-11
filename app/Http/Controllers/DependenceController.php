@@ -36,7 +36,7 @@ class DependenceController extends Controller
 
             return ApiResponse::success($dependence, $message);
         } catch (Exception $e) {
-            return ApiResponse::error($e->getMessage(), 400);
+            return ApiResponse::error('ocurrio un error', 500);
         }
     }
 

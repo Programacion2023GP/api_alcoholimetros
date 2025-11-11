@@ -7,6 +7,8 @@ use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TechnicalController;
 use App\Http\Controllers\Api\LogController;
+use App\Http\Controllers\CauseOfDetentionController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PenaltyController;
 
 // Rutas públicas
@@ -33,9 +35,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/createorUpdate', [DependenceController::class, 'createorUpdate']);
         Route::delete('/delete', [DependenceController::class, 'destroy']);
     });
+    Route::prefix('/causeOfDetention')->group(function () {
+        Route::get('/index', [CauseOfDetentionController::class, 'index']);
+        Route::post('/createorUpdate', [CauseOfDetentionController::class, 'createorUpdate']);
+        Route::delete('/delete', [CauseOfDetentionController::class, 'destroy']);
+    });
+    Route::prefix('/doctor')->group(function () {
+        Route::get('/index', [DoctorController::class, 'index']);
+        Route::post('/createorUpdate', [DoctorController::class, 'createorUpdate']);
+        Route::delete('/delete', [DoctorController::class, 'destroy']);
+    });
 
     // Procedimientos
-  
+
 
     // Permisos
     Route::prefix('/permissions')->group(function () {

@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("
-     CREATE OR REPLACE VIEW  penalties_latest_view AS
+      CREATE OR REPLACE VIEW  penalties_latest_view AS
         SELECT 
             p.*,
+            d.name as doctor,
+            d.certificate as cedula,
             u.fullName as created_by_name,
             u.dependence_id as user_dependence_id,
             u.role as user_role,
@@ -26,6 +28,8 @@ return new class extends Migration
              AND u2.dependence_id = u.dependence_id) > 1 as has_history
         FROM penalties p
         INNER JOIN users u ON p.created_by = u.id
+                left JOIN doctor d ON p.doctor_id = d.id
+
         WHERE p.active = 1
         AND p.id IN (
             SELECT MAX(p3.id)

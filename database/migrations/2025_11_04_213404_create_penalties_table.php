@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('image_penaltie')->nullable();
             $table->string('images_evidences')->nullable();
 
-            $table->string('person_contraloria');
+            $table->string('person_contraloria')->nullable();
             $table->string('oficial_payroll')->nullable();
             $table->string('person_oficial')->nullable();
             $table->string('vehicle_service_type')->nullable();
@@ -31,15 +31,15 @@ return new class extends Migration
             $table->string('filter_supervisor')->nullable();
             $table->string('detainee_released_to')->nullable();
 
-            $table->string('name');
-            $table->string('cp');
-            $table->string('city');
-            $table->integer('age');
+            $table->string('name')->nullable();
+            $table->string('cp')->nullable();
+            $table->string('city')->nullable();
+            $table->integer('age')->nullable();
             $table->float('amountAlcohol');
             $table->integer('number_of_passengers')->nullable();
             $table->string('plate_number')->nullable();
             $table->string('detainee_phone_number')->nullable();
-            $table->string('curp');
+            $table->string('curp')->nullable();
             $table->text('observations')->nullable();
             $table->boolean('active')->default(true);
 

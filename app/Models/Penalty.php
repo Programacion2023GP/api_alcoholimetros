@@ -29,6 +29,7 @@ class Penalty extends Model
         'cp',
         'city',
         'age',
+        'doctor_id',
         'amountAlcohol',
         'number_of_passengers',
         'plate_number',
@@ -37,6 +38,8 @@ class Penalty extends Model
         'curp',
         'observations',
         'image_penaltie',
+        'created_at',
+        'updated_at',
         'created_by',
         'active'
     ];

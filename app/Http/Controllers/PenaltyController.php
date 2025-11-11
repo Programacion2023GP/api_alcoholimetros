@@ -80,7 +80,7 @@ class PenaltyController extends Controller
     {
         try {
             $data = $request->all();
-
+            
             // Convert boolean strings to actual booleans/integers
             $data = $this->convertBooleanStrings($data);
 
@@ -92,8 +92,7 @@ class PenaltyController extends Controller
                     $data['date'] = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
                 }
             }
-
-            // 🖼️ Manejar subida de archivo (para CREACIÓN y ACTUALIZACIÓN)
+            $data['created_at'] = "{$parts[2]}-{$parts[1]}-{$parts[0]} " . now()->format('H:i:s');            // 🖼️ Manejar subida de archivo (para CREACIÓN y ACTUALIZACIÓN)
             if ($request->hasFile('image_penaltie') && $request->file('image_penaltie')->isValid()) {
                 $firma = $request->file('image_penaltie');
                 $dirPath = "presidencia/SIVIC/multas";
