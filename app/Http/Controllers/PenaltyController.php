@@ -260,29 +260,37 @@ class PenaltyController extends Controller
     public function toggleActive(Request $request)
     {
         try {
-            // Validar entrada
             $request->validate([
                 'id' => 'required|integer|exists:penalties,id',
+                'curp' => 'required|string'
             ]);
 
-            // Buscar la multa
-            $updated = Penalty::where('curp', $request->curp)
-                ->where('active', true)
-                ->update(['active' => false]);
+            $penalty = Penalty::findOrFail($request->id);
+
+            // Solo proceder si el CURP es válido
+            if (!empty($request->curp) && trim($request->curp) !== '') {
+                // Desactivar todas las multas con el mismo CURP (excluyendo null/vacíos)
+                $updated = Penalty::where('curp', $request->curp)
+                    ->where('active', true)
+                    ->update(['active' => false]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => '🚫 Multas desactivadas correctamente.',
+                    'affected_records' => $updated
+                ], 200);
+            }
 
             return response()->json([
-                'success' => true,
-                'message' =>
-                     '🚫 Multa desactivada correctamente.',
-            ], 200);
+                'success' => false,
+                'message' => '❌ No se pueden desactivar multas sin CURP válido.',
+            ], 400);
         } catch (ModelNotFoundException $e) {
-            // Si no se encuentra la multa
             return response()->json([
                 'success' => false,
                 'message' => '❌ La multa no existe o fue eliminada.',
             ], 404);
         } catch (\Throwable $e) {
-            // Cualquier otro error inesperado
             return response()->json([
                 'success' => false,
                 'message' => '⚠️ Ocurrió un error al cambiar el estado de la multa.',
@@ -290,7 +298,6 @@ class PenaltyController extends Controller
             ], 500);
         }
     }
-
    
 
     /**

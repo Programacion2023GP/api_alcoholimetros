@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Dependence;
+use App\Models\Doctor;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Log; // porque quieres excluirlo
 use App\Models\Penalty;
@@ -29,6 +30,6 @@ class AppServiceProvider extends ServiceProvider
         User::observe(GenericObserver::class);
         Penalty::observe(GenericObserver::class);
         Dependence::observe(GenericObserver::class);
-       
+        Doctor::observe(GenericObserver::class);
     }
 }
