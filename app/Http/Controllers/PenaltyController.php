@@ -92,7 +92,6 @@ class PenaltyController extends Controller
                     $data['date'] = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
                 }
             }
-            $data['created_at'] = "{$parts[2]}-{$parts[1]}-{$parts[0]} " . now()->format('H:i:s');            // 🖼️ Manejar subida de archivo (para CREACIÓN y ACTUALIZACIÓN)
             if ($request->hasFile('image_penaltie') && $request->file('image_penaltie')->isValid()) {
                 $firma = $request->file('image_penaltie');
                 $dirPath = "presidencia/SIVIC/multas";
@@ -162,7 +161,7 @@ class PenaltyController extends Controller
             return response()->json([
                 'status' => "error",
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => "Ocurrio un error",
             ], 500);
         }
     }

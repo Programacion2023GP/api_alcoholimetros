@@ -38,7 +38,6 @@ class Penalty extends Model
         'curp',
         'observations',
         'image_penaltie',
-        'created_at',
         'updated_at',
         'created_by',
         'active'
