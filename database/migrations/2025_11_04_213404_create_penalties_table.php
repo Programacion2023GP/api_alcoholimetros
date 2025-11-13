@@ -14,6 +14,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('image_penaltie')->nullable();
             $table->string('images_evidences')->nullable();
+            $table->string('images_evidences_car')->nullable();
 
             $table->string('person_contraloria')->nullable();
             $table->string('oficial_payroll')->nullable();

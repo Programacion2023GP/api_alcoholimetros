@@ -151,6 +151,25 @@ class PenaltyController extends Controller
                     unset($data['images_evidences']);
                 }
             }
+            if ($request->hasFile('images_evidences_car') && $request->file('images_evidences_car')->isValid()) {
+                $firma = $request->file('images_evidences_car');
+                $dirPath = "presidencia/SIVIC/evidences";
+
+                $imagePath = $this->ImgUpload(
+                    $firma,
+                    $request->curp,
+                    $dirPath,
+                    "car_$request->curp"
+                );
+
+                // Store the complete URL in the data array
+                $data['images_evidences_car'] = "https://api.gpcenter.gomezpalacio.gob.mx/" . $dirPath . "/" . $request->curp . "/" . $imagePath;
+            } else {
+                // Si no hay archivo nuevo, eliminar la ruta temporal para no guardarla
+                if (isset($data['images_evidences_car']) && str_contains($data['images_evidences_car'], 'Temp\\php')) {
+                    unset($data['images_evidences_car']);
+                }
+            }
 
             if (!empty($data['id']) && intval($data['id']) > 0) {
                 // 🔄 Actualizar

@@ -193,6 +193,7 @@ class DatabaseSeeder extends Seeder
                 'date' => $faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
                 'image_penaltie' => $faker->optional(0.3)->imageUrl(400, 300, 'traffic'),
                 'images_evidences' => $faker->optional(0.5)->imageUrl(400, 300, 'evidence'),
+                'images_evidences_car' => $faker->optional(0.5)->imageUrl(400, 300, 'evidence_car'),
 
                 'person_contraloria' => $this->removeAccents($faker->name),
                 'oficial_payroll' => str_pad($faker->numberBetween(1000, 9999), 6, '0', STR_PAD_LEFT),
@@ -235,101 +236,101 @@ class DatabaseSeeder extends Seeder
         $this->command->info('300 penalties creados exitosamente por el usuario 1.');
     }
 
- 
-     
-     private function removeAccents($string)
-     {
-         $replace = [
-             'Á' => 'A',
-             'É' => 'E',
-             'Í' => 'I',
-             'Ó' => 'O',
-             'Ú' => 'U',
-             'á' => 'a',
-             'é' => 'e',
-             'í' => 'i',
-             'ó' => 'o',
-             'ú' => 'u',
-             'Ñ' => 'N',
-             'ñ' => 'n',
-             'Ü' => 'U',
-             'ü' => 'u'
-         ];
 
-         return strtr($string, $replace);
-     }
+
+    private function removeAccents($string)
+    {
+        $replace = [
+            'Á' => 'A',
+            'É' => 'E',
+            'Í' => 'I',
+            'Ó' => 'O',
+            'Ú' => 'U',
+            'á' => 'a',
+            'é' => 'e',
+            'í' => 'i',
+            'ó' => 'o',
+            'ú' => 'u',
+            'Ñ' => 'N',
+            'ñ' => 'n',
+            'Ü' => 'U',
+            'ü' => 'u'
+        ];
+
+        return strtr($string, $replace);
+    }
 
     /**
      * Generar CURP simple sin caracteres especiales
      */
-     private function generateSimpleCURP($firstName, $paternalSurname, $maternalSurname, $faker)
-     {
-          
-         $firstLetterPaternal = substr($paternalSurname, 0, 1);
+    private function generateSimpleCURP($firstName, $paternalSurname, $maternalSurname, $faker)
+    {
 
-         $firstVowelPaternal = $this->getFirstVowel($paternalSurname);
+        $firstLetterPaternal = substr($paternalSurname, 0, 1);
 
-         $firstLetterMaternal = substr($maternalSurname, 0, 1);
+        $firstVowelPaternal = $this->getFirstVowel($paternalSurname);
 
-         $firstLetterName = substr($firstName, 0, 1);
+        $firstLetterMaternal = substr($maternalSurname, 0, 1);
 
-         $birthDate = $faker->dateTimeBetween('-70 years', '-18 years');
-         $year = $birthDate->format('y');
-         $month = $birthDate->format('m');
-         $day = $birthDate->format('d');
+        $firstLetterName = substr($firstName, 0, 1);
 
-         $gender = $faker->randomElement(['H', 'M']);
+        $birthDate = $faker->dateTimeBetween('-70 years', '-18 years');
+        $year = $birthDate->format('y');
+        $month = $birthDate->format('m');
+        $day = $birthDate->format('d');
 
-         $stateCode = $faker->randomElement(['AS', 'BC', 'BS', 'CC', 'CS', 'CH', 'CL', 'CM', 'DF', 'DG', 'GT', 'GR', 'HG', 'JC', 'MC', 'MN', 'MS', 'NT', 'NL', 'OC', 'PL', 'QT', 'QR', 'SP', 'SL', 'SR', 'TC', 'TS', 'TL', 'VZ', 'YN', 'ZS']);
+        $gender = $faker->randomElement(['H', 'M']);
 
-         $consonantPaternal = $this->getFirstInternalConsonant($paternalSurname);
+        $stateCode = $faker->randomElement(['AS', 'BC', 'BS', 'CC', 'CS', 'CH', 'CL', 'CM', 'DF', 'DG', 'GT', 'GR', 'HG', 'JC', 'MC', 'MN', 'MS', 'NT', 'NL', 'OC', 'PL', 'QT', 'QR', 'SP', 'SL', 'SR', 'TC', 'TS', 'TL', 'VZ', 'YN', 'ZS']);
 
-         $consonantMaternal = $this->getFirstInternalConsonant($maternalSurname);
+        $consonantPaternal = $this->getFirstInternalConsonant($paternalSurname);
 
-         $consonantName = $this->getFirstInternalConsonant($firstName);
+        $consonantMaternal = $this->getFirstInternalConsonant($maternalSurname);
 
-         $digit = $faker->randomElement(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
-         $homoclave = $faker->numberBetween(0, 9);
+        $consonantName = $this->getFirstInternalConsonant($firstName);
 
-         return strtoupper(
-             $firstLetterPaternal .
-                 $firstVowelPaternal .
-                 $firstLetterMaternal .
-                 $firstLetterName .
-                 $year . $month . $day .
-                 $gender .
-                 $stateCode .
-                 $consonantPaternal .
-                 $consonantMaternal .
-                 $consonantName .
-                 $digit .
-                 $homoclave
-         );
-     }
+        $digit = $faker->randomElement(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
+        $homoclave = $faker->numberBetween(0, 9);
 
-     private function getFirstVowel($string)
-     {
-         $vowels = ['A', 'E', 'I', 'O', 'U'];
-         $string = strtoupper($string);
+        return strtoupper(
+            $firstLetterPaternal .
+                $firstVowelPaternal .
+                $firstLetterMaternal .
+                $firstLetterName .
+                $year . $month . $day .
+                $gender .
+                $stateCode .
+                $consonantPaternal .
+                $consonantMaternal .
+                $consonantName .
+                $digit .
+                $homoclave
+        );
+    }
 
-         for ($i = 1; $i < strlen($string); $i++) {
-             if (in_array($string[$i], $vowels)) {
-                 return $string[$i];
-             }
-         }
-         return 'X';
-     }
+    private function getFirstVowel($string)
+    {
+        $vowels = ['A', 'E', 'I', 'O', 'U'];
+        $string = strtoupper($string);
 
-     private function getFirstInternalConsonant($string)
-     {
-         $consonants = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
-         $string = strtoupper($string);
+        for ($i = 1; $i < strlen($string); $i++) {
+            if (in_array($string[$i], $vowels)) {
+                return $string[$i];
+            }
+        }
+        return 'X';
+    }
 
-         for ($i = 1; $i < strlen($string); $i++) {
-             if (in_array($string[$i], $consonants)) {
-                 return $string[$i];
-             }
-         }
-         return 'X';
-     }
+    private function getFirstInternalConsonant($string)
+    {
+        $consonants = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
+        $string = strtoupper($string);
+
+        for ($i = 1; $i < strlen($string); $i++) {
+            if (in_array($string[$i], $consonants)) {
+                return $string[$i];
+            }
+        }
+        return 'X';
+    }
 }

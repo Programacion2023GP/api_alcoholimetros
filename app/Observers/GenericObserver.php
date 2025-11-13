@@ -11,6 +11,8 @@ class GenericObserver
     protected function storeLog($model, $action, $old = null, $new = null)
     {
         try {
+            // \Log::error(get_class($model));
+
             Log::create([
                 'user_id' => auth()->id(),
                 'loggable_type' => get_class($model),
@@ -52,8 +54,8 @@ class GenericObserver
         $this->storeLog($model, 'forceDeleted', $model->getOriginal());
     }
 
-    public function saved($model)
-    {
-        $this->storeLog($model, 'saved', null, $model->getAttributes());
-    }
+    // public function saved($model)
+    // {
+    //     $this->storeLog($model, 'saved', null, $model->getAttributes());
+    // }
 }

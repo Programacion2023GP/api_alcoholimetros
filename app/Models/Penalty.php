@@ -13,6 +13,7 @@ class Penalty extends Model
         'time',
         'date',
         'images_evidences',
+        'images_evidences_car',
         'person_contraloria',
         'oficial_payroll',
         'person_oficial',
