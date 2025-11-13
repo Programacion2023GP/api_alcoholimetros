@@ -39,7 +39,28 @@ class PenaltyController extends Controller
             'user_role' => $userRole
         ]);
     }
+    public function courts(Request $request)
+    {
 
+        $penalties = DB::select("
+    SELECT *
+    FROM penalties_latest_view p
+    WHERE p.alcohol_concentration >= 3
+      AND NOT EXISTS (
+          SELECT 1
+          FROM courts c
+          WHERE c.penalties_id = p.id
+      )
+    ORDER BY p.id DESC
+");
+
+
+        return response()->json([
+            'status' => 'success',
+            'success' => true,
+            'data' => $penalties,
+        ]);
+    }
     public function historial(Request $request)
     {
         $user = auth()->user();
@@ -80,7 +101,7 @@ class PenaltyController extends Controller
     {
         try {
             $data = $request->all();
-            
+
             // Convert boolean strings to actual booleans/integers
             $data = $this->convertBooleanStrings($data);
 
@@ -257,49 +278,48 @@ class PenaltyController extends Controller
     }
 
 
-   public function toggleActive(Request $request)
-{
-    try {
-        $request->validate([
-            'id' => 'required|integer|exists:penalties,id',
-            'curp' => 'required|string'
-        ]);
+    public function toggleActive(Request $request)
+    {
+        try {
+            $request->validate([
+                'id' => 'required|integer|exists:penalties,id',
+                'curp' => 'required|string'
+            ]);
 
-        $penalty = Penalty::findOrFail($request->id);
+            $penalty = Penalty::findOrFail($request->id);
 
-        // Solo proceder si el CURP es válido
-        if (!empty($request->curp) && trim($request->curp) !== '') {
-            // Desactivar todas las multas con el mismo CURP (excluyendo null/vacíos)
-            $updated = Penalty::where('curp', $request->curp)
-                ->where('active', true)
-                ->update(['active' => false]);
+            // Solo proceder si el CURP es válido
+            if (!empty($request->curp) && trim($request->curp) !== '') {
+                // Desactivar todas las multas con el mismo CURP (excluyendo null/vacíos)
+                $updated = Penalty::where('curp', $request->curp)
+                    ->where('active', true)
+                    ->update(['active' => false]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => '🚫 Multas desactivadas correctamente.',
+                    'affected_records' => $updated
+                ], 200);
+            }
 
             return response()->json([
-                'success' => true,
-                'message' => '🚫 Multas desactivadas correctamente.',
-                'affected_records' => $updated
-            ], 200);
+                'success' => false,
+                'message' => '❌ No se pueden desactivar multas sin CURP válido.',
+            ], 400);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '❌ La multa no existe o fue eliminada.',
+            ], 404);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '⚠️ Ocurrió un error al cambiar el estado de la multa.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => '❌ No se pueden desactivar multas sin CURP válido.',
-        ], 400);
-
-    } catch (ModelNotFoundException $e) {
-        return response()->json([
-            'success' => false,
-            'message' => '❌ La multa no existe o fue eliminada.',
-        ], 404);
-    } catch (\Throwable $e) {
-        return response()->json([
-            'success' => false,
-            'message' => '⚠️ Ocurrió un error al cambiar el estado de la multa.',
-            'error' => $e->getMessage(),
-        ], 500);
     }
-}
-   
+
 
     /**
      * Eliminar multa

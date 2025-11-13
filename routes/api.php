@@ -8,6 +8,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\TechnicalController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\CauseOfDetentionController;
+use App\Http\Controllers\CourtController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PenaltyController;
 
@@ -45,7 +46,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/createorUpdate', [DoctorController::class, 'createorUpdate']);
         Route::delete('/delete', [DoctorController::class, 'destroy']);
     });
-
+    Route::prefix('/court')->group(function () {
+        Route::get('/index', [CourtController::class, 'index']);
+        Route::post('/createorUpdate', [CourtController::class, 'createorUpdate']);
+        Route::delete('/delete', [CourtController::class, 'destroy']);
+    });
     // Procedimientos
 
 
@@ -59,7 +64,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('penalties')->group(function () {
         Route::get('/index', [PenaltyController::class, 'index']);
         Route::post('/historial', [PenaltyController::class, 'historial']);
+        Route::get('/courts', [PenaltyController::class, 'courts']);
 
+        
         Route::post('/createorUpdate', [PenaltyController::class, 'storeOrUpdate']); // ← crea o actualiza
         Route::delete('/delete', [PenaltyController::class, 'toggleActive']);
     });
