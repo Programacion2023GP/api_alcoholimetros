@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use function Symfony\Component\Clock\now;
+
 class PenaltyController extends Controller
 {
     /**
@@ -107,13 +109,15 @@ class PenaltyController extends Controller
             $data = $this->convertBooleanStrings($data);
 
             // Normalizar fecha si viene en formato dd/mm/yyyy
-            if (isset($data['date'])) {
-                $parts = explode('/', $data['date']);
-                if (count($parts) === 3) {
-                    // dd/mm/yyyy => yyyy-mm-dd
-                    $data['date'] = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
-                }
+
+            // Evita mandar fecha inválida, usa NULL pero NO LANZA ERROR
+            if (!isset($data['date']) || trim($data['date']) === '') {
+                unset($data['date']);
             }
+
+            $data['time'] = date('H:i:s');
+            
+
 
 
             // REGISTRAR PENALTY PREALOAD DATA
@@ -215,7 +219,7 @@ class PenaltyController extends Controller
             return response()->json([
                 'status' => "error",
                 'success' => false,
-                'message' => "Ocurrio un error",
+                'message' =>  $e->getMessage(),
             ], 500);
         }
     }

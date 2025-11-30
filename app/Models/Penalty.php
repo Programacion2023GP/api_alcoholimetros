@@ -12,7 +12,7 @@ class Penalty extends Model
     protected $fillable = [
         'penalty_preload_data_id',
         'time',
-        'date',
+        // 'date',
         'images_evidences',
         'images_evidences_car',
         // 'person_contraloria',
